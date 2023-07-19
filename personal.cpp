@@ -39,7 +39,8 @@ switch(sel)
             if(per_details.find(ac_no)!=per_details.end())
             {
                 t1.withdraw(ac_no,amount);
-                cout << amount << "withdrew "<<endl;
+                cout << amount << "withdrew "<< "balance is : ";
+                cout << acc_details[ac_no]<<endl;
             }
             break;
 

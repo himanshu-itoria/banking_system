@@ -13,11 +13,20 @@ unordered_map<string, vector<string> > sav_acounts;
 unordered_map<string, vector<string> > curr_acounts;
 unordered_map<string, vector<string> > loan_acounts;
 unordered_map<string, vector<string>  > transactions_details;
-unordered_map<string, int> acc_details;  // balance, nrv, interest,
+unordered_map<string, double> acc_details;  // balance, nrv, interest,
 unordered_map<string, vector<string>  > per_details;
+unordered_map< string,vector<string> >atm_details;
+// name,age,email_address,phoneno
 
+// enum Loantype
+// {
+//     //public :
+//         Home,
+//         Car,
+//         Personal,
+//         Car,
 
-
+// };
 string randomString(int ch)
 {
     char alpha[10] = { '1', '2','3','4','5','6','7','8','9','0'};
@@ -75,37 +84,34 @@ class Transactions : public Bank_facilities
 
             }
 
-            double withdraw(double bal, double new_bal)
-            {
-                double ans = bal - new_bal;
-                return ans;
+            void withdraw(string ac, double amount)
+            {   
+                acc_details[ac]-= amount;
 
             }
-            double deposit(double bal, double new_bal)
+            double deposit(double bal, double amount)
             {
-                double ans = new_bal - bal;
-                return ans;
-
+                return bal = bal + amount;
             }
 
             
 };
 
 
-class Savings_ac : public Bank_facilities, public Transactions
+class Savings_ac :  public Transactions
 { public:
    bool saving;
-    Bank_facilities ab;
+    //Bank_facilities ab;
     
 
     
 
     
 };
-class Curr_ac : public Bank_facilities, public Transactions
+class Curr_ac : public Transactions
 { public:
    bool current;
-    Bank_facilities ab;
+   // Bank_facilities ab;
     
 
     
@@ -113,7 +119,7 @@ class Curr_ac : public Bank_facilities, public Transactions
     
 };
 
-class Loan_ac : public Bank_facilities, public Transactions
+class Loan_ac : public Bank_facilities
 { public:
    bool lo;
     Bank_facilities ab;
@@ -154,32 +160,16 @@ class Atm_card
 // }
 };
 // Atm_card cons;
- unordered_map< string,vector<string> >atm_details;
-class Transactions : public Bank_facilities
-{ public:
-    void withdraw()
-    {
+ 
 
-    }
-    void deposit()
-    {
 
-    };
-    void cal_interest()
-    {
 
-    };
+
+
+// class Account_create
+// { public:
     
-};
-
-
-
-
-
-class Account_create
-{ public:
-    
-};
+// };
 
 
 
@@ -244,7 +234,7 @@ void open_account()
     // store address credentials here
 
 
-
+ Transactions ta;
 
 
     
@@ -273,7 +263,9 @@ void open_account()
     if(x == 1)
     {
         sav.saving = 1;
-        int dep;
+        double dep;
+        cin >> dep;
+        
         cout << "Deposit atleast 10k to open";
         if(dep<10000)
         {
@@ -281,11 +273,14 @@ void open_account()
             return;
         }
         else{
+            ta.deposit(0,dep);
+            acc_details[name_ac_no[cust.name]] = dep;
             fac.ac_no = randomString(12);
             name_ac_no[cust.name] = fac.ac_no;
              cout << endl << name_ac_no[cust.name]<< endl;
 
              fac.balance = dep;
+             acc_details[name_ac_no[cust.name]] = dep;
 
         }
 
@@ -298,6 +293,7 @@ void open_account()
     {
         curr.current = 1;
         int dep;
+        cin>>dep;
         cout << "Deposit atleast 100k to open";
         if(dep<100000)
         {
@@ -305,11 +301,15 @@ void open_account()
             return;
         }
         else{
+            ta.deposit(0,dep);
+            acc_details[name_ac_no[cust.name]] = dep;
             fac.ac_no = randomString(12);
             name_ac_no[cust.name] = fac.ac_no;
              cout << endl << name_ac_no[cust.name]<< endl;
 
              fac.balance = dep;
+             acc_details[name_ac_no[cust.name]] = dep;
+
         }
 
         cout << endl << "Opened current ac"<< endl;
@@ -321,6 +321,10 @@ void open_account()
     
     //a.atmprint();
     //void atmprint()
+    
+    per_details[name_ac_no[cust.name]].push_back(cust.name);
+    per_details[name_ac_no[cust.name]].push_back(cust.age);
+    per_details[name_ac_no[cust.name]].push_back(cust.email);
 
     Atm_card details;
     details.atm_id = randomString(16);
@@ -352,6 +356,7 @@ cout<< endl<< "atm card no: " << abc[0]<<endl;
     cout << endl << "exp_date : " << abc[2]<<endl;
 
 
+cout << " Put in some ";
     
    // atms.push_back(details);
 //    for(int i =0; i<3;i++)
@@ -377,30 +382,36 @@ cout<< endl<< "atm card no: " << abc[0]<<endl;
 }
 
     
-//void print_atm
 
+bool cansend(string ac_no, double balance, double amount)
+{ 
+       if(balance < amount)
+       {
+            cout << endl <<"can't transact"<<endl;
+            return false;
+       }
+        cout << endl<<"Can transact "<<endl;
+        return true;
 
-
-
-    
-void send_receive(string sender,string receiver)
-{
-
+}
+void transaction(string sender,string receiver, double amount)
+{ if(per_details.find(sender)!=per_details.end() && per_details.find(receiver)!=per_details.end())
+    {if(cansend(sender, acc_details[sender],amount) )
+    {
+        acc_details[sender] -= amount;
+        acc_details[receiver] += amount;
+        
+    }
+    }
 }
 
 
 
 
 
-
-
-
-
-
-int main()
-{ open_account();
- //string abc = randomString(16);
- //cout << abc;
-    //cout <<"Hello World";
+int player()
+{
+    cout << "hello world";
     return 0;
 }
+

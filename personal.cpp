@@ -10,15 +10,7 @@ Atm_card a1;
 string receiver_ac;
 
 
-// cout << "Transaction Options" << endl;
 
-
-// cout << "1. Withdraw amount: "<< endl;
-// cout << "2. Print pasbook: "<<endl;
-// cout << "3. Calculate my interest: "<<endl;
-// cout << "4. Give my ATM card details"<<endl;
-// cout << "5. Send money"<<endl;
-// cout << "6. Try again"<<endl;
  
  string ac_no;
  cout<< "Type ac no ";
@@ -103,3 +95,35 @@ switch(sel)
 
 
 }
+
+class Savings_ac :  public Transactions
+{ public:
+   bool saving;
+    //Bank_facilities ab;
+    
+
+    
+
+    
+};
+class Curr_ac : public Transactions
+{ public:
+   bool current;
+   // Bank_facilities ab;
+    
+
+    
+
+    
+};
+
+class Loan_ac : public Bank_facilities
+{ public:
+   bool lo;
+    Bank_facilities ab;
+    
+
+    
+
+    
+};

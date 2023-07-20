@@ -1,4 +1,5 @@
 #include "personal.cpp"
+
 //#inclue "aga"
 
 
@@ -16,7 +17,7 @@ void pay_emis(string ac_no, double emi_amount,double bal)
 
 void assigning_date()
 {
-    dates[1] = 31;
+dates[1] = 31;
 dates[2] = 29;
 dates[3] = 31;
 dates[4] = 30;

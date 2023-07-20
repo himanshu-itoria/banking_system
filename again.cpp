@@ -3,40 +3,39 @@
 #include <string>
 #include <unordered_map>
 #include <map>
-
+#include <stdio.h>
+#include <ctime>
+#include <typeinfo>
 
 using namespace std;
 #define s std ::
 
-unordered_map<string, vector<string> > sav_acounts;
-unordered_map<string, vector<string> > curr_acounts;
-unordered_map<string, vector<string> > loan_acounts;
-unordered_map<string, vector<string>  > transactions_details;
+unordered_map<string, vector<string> > sav_acounts,curr_accounts,loan_accounts,per_details,atm_details,transactions_details;
 unordered_map<string, double> acc_details;  
-unordered_map<string, vector<string>  > per_details;
-unordered_map< string,vector<string> >atm_details;
-unordered_map<string,bool>sav_yes;
-unordered_map<string,bool>curr_yes;
-unordered_map<string,bool>loan_yes;
-unordered_map<string,vector<double>>withdrawals;
-unordered_map<string,vector<double>>deposits;
-unordered_map<string,vector<double>>sent;
-unordered_map<string,vector<double>>received;
-unordered_map<string,string>sent_to;
-unordered_map<string,string>received_from;
-unordered_map<string,vector<double>>home_installments;
-unordered_map<string,vector<double>>personal_installments;
-unordered_map<string,vector<double>>business_installments;
+unordered_map<string,bool>sav_yes,curr_yes,loan_yes;
+unordered_map<string,vector<double>>withdrawals,deposits,sent,received;
+unordered_map<string,string>sent_to,received_from;
+unordered_map<string,vector<double>>home_installments,personal_installments,business_installments;
 unordered_map<string,double>loan_amount_pending;
-unordered_map<string,string>ac_to_loan_ac;
-unordered_map<string,string>loan_type;
+unordered_map<string,string>ac_to_loan_ac,loan_type;
 unordered_map<string,vector<double>>installments;
-unordered_map<string,vector<int>>open_dates;
-unordered_map<string,vector<int>>loan_taken_dates;
+unordered_map<string,vector<int>>open_dates,loan_taken_dates;
+map<Date,int>open_ac_date,six_interest,daily_tran,monthly_transact;
+
 
 
 unordered_map<int,int>dates;
 //dates[1]->1;
+
+class Date {
+  public:
+        int d, m, y;
+};
+  
+
+const int monthDays[12]
+    = { 31, 28, 31, 30, 31, 30, 
+       31, 31, 30, 31, 30, 31 };
 
 
 
@@ -106,7 +105,20 @@ class Transactions : public Bank_facilities
                 dd.push_back(amount);
                 deposits[ac] = dd;
                 return bal = bal + amount;
-            }           
+            }        
+            Date curr_transact()
+            {
+                Date d1;
+                time_t tmNow;
+                tmNow = time(NULL);
+                struct tm t = *localtime(&tmNow);
+                
+            d1.d = t.tm_mday;
+            d1.m = t.tm_mon+1;
+            d1.y = t.tm_year+1900;
+
+                return d1;
+            }   
 };
 
 class Atm_card
@@ -175,11 +187,8 @@ void open_account()
     
     Savings_ac sav;
     Loan_ac lo;
-    Curr_ac curr;
-    
-    
-
-   
+    Curr_ac curr;    
+  
     if(x == 1)
     {
         sav.saving = 1;
@@ -236,11 +245,7 @@ void open_account()
         }
 
         cout << endl << "Opened current ac"<< endl;
-       // continue;
     }
-
-   
-    
     per_details[name_ac_no[cust.name]].push_back(cust.name);
     per_details[name_ac_no[cust.name]].push_back(cust.age);
     per_details[name_ac_no[cust.name]].push_back(cust.email);
@@ -261,18 +266,14 @@ atm_details[name_ac_no[cust.name]].push_back(details.exp_date);
 
 vector<string> abc = atm_details[name_ac_no[cust.name]];
 
-cout<< endl<< "atm card no: " << abc[0]<<endl;
+cout<< endl<< "atm card no: "<< abc[0]<<endl;
     cout<< endl<< "cvv: " << abc[1]<<endl;
     cout << endl << "exp_date : " << abc[2]<<endl;
 
 
-cout << " Put in some ";
-    
-  
+cout << " Put in some "; 
     
 }
-
-    
 
 bool cansend(string ac_no, double balance, double amount)
 { 
@@ -297,10 +298,8 @@ void transaction(string sender,string receiver, double amount)
         vector<double>rd = received[receiver];
         rd.push_back(amount);
         received[receiver] = rd;
-
         sent_to[sender] = received_from[receiver];
         received_from[receiver] = sent_to[sender];
-        
     }
     }
 }

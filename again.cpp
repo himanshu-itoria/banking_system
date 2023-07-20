@@ -40,6 +40,7 @@ class Customer
 class Address
 { public :
     vector<string>add[7];
+    
 
 };
 unordered_map< string,vector<string> >address_details;
@@ -149,6 +150,7 @@ void open_account()
     {
         sav.saving = 1;
         double dep;
+        cout << "Deposit amount : ";
         cin >> dep;
         
         cout << "Deposit atleast 10k to open";

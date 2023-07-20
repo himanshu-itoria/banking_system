@@ -1,6 +1,7 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include "Customer.cpp"
 
 enum class AccountType {
     SAVING_ACCOUNT,
@@ -17,19 +18,7 @@ enum class LoanType {
 };
 
 
-class Customer {
-private:
-    std::string firstName;
-    std::string lastName;
-    std::string email;
-    std::string phoneNumber;
-    std::string address;
-   
 
-public:
-    Customer(const std::string& fName, const std::string& lName, const std::string& email, const std::string& phone, const std::string& addr);
-    
-};
 
 
 class Account {

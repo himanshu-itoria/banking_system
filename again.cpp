@@ -15,6 +15,33 @@ unordered_map<string, vector<string>  > transactions_details;
 unordered_map<string, double> acc_details;  
 unordered_map<string, vector<string>  > per_details;
 unordered_map< string,vector<string> >atm_details;
+unordered_map<string,bool>sav_yes;
+unordered_map<string,bool>curr_yes;
+unordered_map<string,bool>loan_yes;
+unordered_map<string,vector<double>>withdrawals;
+unordered_map<string,vector<double>>deposits;
+unordered_map<string,vector<double>>sent;
+unordered_map<string,vector<double>>received;
+unordered_map<string,string>sent_to;
+unordered_map<string,string>received_from;
+unordered_map<string,vector<double>>home_installments;
+unordered_map<string,vector<double>>personal_installments;
+unordered_map<string,vector<double>>business_installments;
+unordered_map<string,double>loan_amount_pending;
+unordered_map<string,string>ac_to_loan_ac;
+unordered_map<string,string>loan_type;
+unordered_map<string,vector<double>>installments;
+unordered_map<string,vector<int>>open_dates;
+unordered_map<string,vector<int>>loan_taken_dates;
+
+
+unordered_map<int,int>dates;
+//dates[1]->1;
+
+
+
+
+
 
 string randomString(int ch)
 {
@@ -67,10 +94,17 @@ class Transactions : public Bank_facilities
             void withdraw(string ac, double amount)
             {   
                 acc_details[ac]-= amount;
+                vector<double>wd = withdrawals[ac];
+                wd.push_back(amount);
+                withdrawals[ac] = wd;
+
 
             }
-            double deposit(double bal, double amount)
+            double deposit(double bal, double amount, string ac)
             {
+                vector<double>dd = deposits[ac];
+                dd.push_back(amount);
+                deposits[ac] = dd;
                 return bal = bal + amount;
             }           
 };
@@ -160,7 +194,7 @@ void open_account()
             return;
         }
         else{
-            ta.deposit(0,dep);
+            ta.deposit(0,dep,fac.ac_no);
             acc_details[name_ac_no[cust.name]] = dep;
             fac.ac_no = randomString(12);
             name_ac_no[cust.name] = fac.ac_no;
@@ -168,6 +202,7 @@ void open_account()
 
              fac.balance = dep;
              acc_details[name_ac_no[cust.name]] = dep;
+             sav_yes[fac.ac_no] = 1;
 
         }
 
@@ -188,7 +223,7 @@ void open_account()
             return;
         }
         else{
-            ta.deposit(0,dep);
+            ta.deposit(0,dep,fac.ac_no);
             acc_details[name_ac_no[cust.name]] = dep;
             fac.ac_no = randomString(12);
             name_ac_no[cust.name] = fac.ac_no;
@@ -196,6 +231,7 @@ void open_account()
 
              fac.balance = dep;
              acc_details[name_ac_no[cust.name]] = dep;
+             curr_yes[fac.ac_no] = 1;
 
         }
 
@@ -255,6 +291,15 @@ void transaction(string sender,string receiver, double amount)
     {
         acc_details[sender] -= amount;
         acc_details[receiver] += amount;
+        vector<double>sd = sent[sender];
+                sd.push_back(amount);
+                sent[sender] = sd;
+        vector<double>rd = received[receiver];
+        rd.push_back(amount);
+        received[receiver] = rd;
+
+        sent_to[sender] = received_from[receiver];
+        received_from[receiver] = sent_to[sender];
         
     }
     }

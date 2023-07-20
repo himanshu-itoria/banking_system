@@ -120,10 +120,65 @@ class Curr_ac : public Transactions
 class Loan_ac : public Bank_facilities
 { public:
    bool lo;
-    Bank_facilities ab;
-    
 
+   Bank_facilities ab;
+   double interest;
+   double duration_months = 120;//10 years
     
-
+   string loan_account_no;
+    
+    double  car_loan(double bal)
+    {   interest = 8;
+        loan_type[loan_account_no] = "Car";
+        double grantable_amount = 0.4 * balance;
+        double duration_needed;
+        cout << "For how many months : ";
+        double amount_to_pay =  grantable_amount*(1 + ((duration_needed * 0.08)/12));
+        cout << "You got to pay : " << amount_to_pay << " after " << duration_needed<<" months "<<endl;
+       
+    }
+     double  home_loan(double bal)
+    {   interest = 7;
+         loan_type[loan_account_no] = "Home";
+        double grantable_amount = 0.4 * balance;
+        double duration_needed;
+        cout << "For how many months : ";
+        double amount_to_pay =  grantable_amount*(1 + ((duration_needed * 0.08)/12));
+        cout << "You got to pay : " << amount_to_pay << " after " << duration_needed<<" months "<<endl;
+       
+    }
+     double  personal_loan(double bal)
+    {   interest = 12;
+         loan_type[loan_account_no] = "Personal";
+        double grantable_amount = 0.4 * balance;
+        double duration_needed;
+        cout << "For how many months : ";
+        double amount_to_pay =  grantable_amount*(1 + ((duration_needed * 0.08)/12));
+        cout << "You got to pay : " << amount_to_pay << " after " << duration_needed<<" months "<<endl;
+       
+    }
+     double  business_loan(double bal)
+    {   interest = 15;
+         loan_type[loan_account_no] = "Business";
+        double grantable_amount = 0.4 * balance;
+        double duration_needed;
+        cout << "For how many months : ";
+        double amount_to_pay =  grantable_amount*(1 + ((duration_needed * 0.08)/12));
+        cout << "You got to pay : " << amount_to_pay << " after " << duration_needed<<" months "<<endl;
+       
+    }
     
 };
+void create_loan_ac(string ac)
+{
+        vector<string> person = per_details[ac];
+        int age = stoi(person[1]);
+
+        if(age >25 && (sav_yes[ac] || curr_yes[ac]))
+        {      string loan_ac_no = randomString(12);
+                loan_yes[ac] = 1;
+                ac_to_loan_ac[ac] = loan_ac_no;
+        }
+
+
+}
